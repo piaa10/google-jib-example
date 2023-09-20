@@ -18,8 +18,8 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2 
         with:
-          aws-access-key-id: AKIAYNGQY23FQSLHP64W
-          aws-secret-access-key: 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
+          aws-access-key-id: ${{ secrets.ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.SECRET_ACCESS_KEY }}
           aws-region: eu-west-2
 
       - name: Login to Amazon ECR
@@ -63,8 +63,8 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2 
         with:
-          aws-access-key-id: AKIAYNGQY23FQSLHP64W
-          aws-secret-access-key: 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
+          aws-access-key-id: ${{ secrets.ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.SECRET_ACCESS_KEY }}
           aws-region: eu-west-2
 
       - name: Update Kubeconfig

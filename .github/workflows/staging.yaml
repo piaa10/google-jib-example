@@ -49,3 +49,36 @@ jobs:
           -Dimage=$REGISTRY/$PRODUCT:$IMAGE_TAG
         shell: bash
 
+  Staging-CD:
+    name: Staging-CD
+    needs: [ Staging-CI ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Manifest repo
+        uses: actions/checkout@v3
+        with:
+          repository: piaa10/google-jib-manifest.git
+          token: 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
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2 
+        with:
+          aws-access-key-id: AKIAYNGQY23FQSLHP64W
+          aws-secret-access-key: 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
+          aws-region: eu-west-2
+
+      - name: Update Kubeconfig
+        shell: bash
+        run: |
+          aws eks update-kubeconfig --name solvians-staging-pipeline --region eu-west-2
+
+      - name: Configure kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'v1.27.1'
+        id: install
+
+      - name: Apply Manifest
+        shell: bash
+        run: |
+          kubectl apply -f my-manifests.yaml

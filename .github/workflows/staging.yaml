@@ -40,7 +40,7 @@ jobs:
           PRODUCT: google-jib
           IMAGE_TAG: 1.0.5
         run: |
-          mvn compile com.google.cloud.tools:jib-maven-plugin:3.3.2:dockerBuild \
+          mvn compile com.google.cloud.tools:jib-maven-plugin:3.3.2:build \
           -Dimage=$REGISTRY/$PRODUCT:$IMAGE_TAG
         shell: bash
 

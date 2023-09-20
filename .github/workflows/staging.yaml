@@ -28,11 +28,11 @@ jobs:
         with:
           mask-password: 'true'
 
-      # - name: setup jdk
-      #   uses: actions/setup-java@v3
-      #   with:
-      #     distribution: 'corretto'
-      #     java-version: '17'
+      - name: setup jdk
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'corretto'
+          java-version: '17'
 
       - name: build tag and push image to registry
         env:

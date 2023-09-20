@@ -1,0 +1,48 @@
+name: Staging
+
+on:
+  push:
+    branches-ignore:
+      - 'main'
+
+jobs:
+  Staging-CI:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2 
+        with:
+          role-to-assume: arn:aws:iam::578110936779:role/github-actions-role
+          aws-region: eu-west-2
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+        with:
+          mask-password: 'true'
+
+      - name: Build, tag, and push docker image to Amazon ECR
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: my-ecr-repo
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+
+      - name: build tag and push image to registry
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          PRODUCT: google-jib
+          IMAGE_TAG: 1.0.5
+        run: |
+          mvn compile com.google.cloud.tools:jib-maven-plugin:3.3.2:dockerBuild \
+          -Dimage=$REGISTRY/$PRODUCT:$IMAGE_TAG
+        shell: bash
+

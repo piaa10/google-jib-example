@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class GoogleJibExampleApplication {
 	@GetMapping("/message")
 	public String message(){
-		return "Deployment using Google Jib";
+		return "Deployment using Google Jib Spring App";
 	}
 	public static void main(String[] args) {
 		SpringApplication.run(GoogleJibExampleApplication.class, args);

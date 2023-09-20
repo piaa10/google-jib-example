@@ -28,11 +28,11 @@ jobs:
         with:
           mask-password: 'true'
 
-      - name: Install Java and Maven
-        uses: actions/setup-java@v2
+      - name: setup jdk
+        uses: actions/setup-java@v3
         with:
-          java-version: '11'
-          distribution: 'adopt'
+          distribution: 'temurin' # See 'Supported distributions' for available options
+          java-version: '17'
 
       - name: build tag and push image to registry
         env:

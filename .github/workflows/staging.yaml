@@ -34,11 +34,16 @@ jobs:
           distribution: 'corretto'
           java-version: '17'
 
+      - name: Short SHA
+        id: sha
+        run: |
+          echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+
       - name: build tag and push image to registry
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           PRODUCT: google-jib
-          IMAGE_TAG: 1.0.5
+          IMAGE_TAG: ${{ steps.sha.outputs.sha_short  }}
         run: |
           mvn compile com.google.cloud.tools:jib-maven-plugin:3.3.2:build \
           -Dimage=$REGISTRY/$PRODUCT:$IMAGE_TAG
